@@ -21,5 +21,5 @@ public class AverageRating {
     private UUID driverId;
     private BigDecimal averageRating;
     private int totalReviews;
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 }

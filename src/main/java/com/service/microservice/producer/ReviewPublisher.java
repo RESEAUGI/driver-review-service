@@ -2,7 +2,6 @@ package com.service.microservice.producer;
 
 import org.springframework.pulsar.core.PulsarTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.pulsar.core.PulsarTemplate;
 import org.springframework.stereotype.Service;
 
 import com.service.microservice.model.DriverReview;
@@ -15,6 +14,7 @@ public class ReviewPublisher {
     private String topicName;
 
     private PulsarTemplate<Object> template;
+    
 
     public ReviewPublisher(@Value("${spring.pulsar.producer.topic-name}") String topicName,
             PulsarTemplate<Object> template) {

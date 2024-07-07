@@ -23,8 +23,8 @@ public class DriverReview {
     private UUID driverId;
     private UUID reservationId;
     private String comment;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
     private int likes;
     private int dislikes;
     private BigDecimal note;
