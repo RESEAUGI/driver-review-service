@@ -20,31 +20,17 @@ import java.util.UUID;
 public class ReviewController {
     private final ReviewService reviewService;
     private ReviewPublisher reviewPublisher;
-    private ReviewConsumer reviewConsumer;
-    public String topicName;
 
-    public ReviewController(ReviewService reviewService, ReviewPublisher reviewPublisher,
-            @Value("${spring.pulsar.producer.topic-name1}") String topicName) {
+    public ReviewController(ReviewService reviewService, ReviewPublisher reviewPublisher) {
         this.reviewService = reviewService;
         this.reviewPublisher = reviewPublisher;
-        this.reviewConsumer = reviewConsumer;
-        this.topicName = topicName;
     }
 
-    // @PulsarListener(topics = "${spring.pulsar.producer.topic-name2}",
-    // subscriptionName = "${spring.pulsar.consumer.subscription.name1}")
     @PostMapping("/create")
-    public ResponseEntity<DriverReview> createReview(@RequestBody DriverReview review) throws JsonProcessingException {
+    public void createReview(@RequestBody DriverReview review) throws JsonProcessingException {
+        UUID requestId = UUID.randomUUID();
+        review.setReviewId(requestId);
         reviewPublisher.publishRawMessage(review);
-        Boolean msg=false;
-        Boolean response = reviewConsumer.consumeReviewEvent(msg);
-        if(response){
-            DriverReview createdReview = reviewService.createReview(review);
-            return ResponseEntity.ok(createdReview);
-        } else {
-            System.out.println("User absent");
-            return null;
-        }
     }
 
     @GetMapping("/driver/{driverId}")

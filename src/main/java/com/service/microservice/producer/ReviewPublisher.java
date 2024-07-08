@@ -16,7 +16,7 @@ public class ReviewPublisher {
     private PulsarTemplate<Object> template;
     
 
-    public ReviewPublisher(@Value("${spring.pulsar.producer.topic-name}") String topicName,
+    public ReviewPublisher(@Value("${spring.pulsar.producer.topic-name1}") String topicName,
             PulsarTemplate<Object> template) {
         this.topicName = topicName;
         this.template = template;
@@ -25,7 +25,7 @@ public class ReviewPublisher {
 
     public void publishRawMessage(DriverReview review) {
         template.send(topicName, review);
-        log.info("EventPublisher::publishRawMessage publish the event {}", review.toString());
+        log.info("EventPublisher::publishRawMessage publish the event {}",review.toString());
     }
 
 }

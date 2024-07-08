@@ -54,8 +54,8 @@ public class ReviewService {
         }*/
 
         // Générer un ID unique pour la review
-        UUID reviewId = cassandraIdGenerator.getNextId();
-        review.setReviewId(reviewId);
+        //UUID reviewId = cassandraIdGenerator.getNextId();
+        //review.setReviewId(reviewId);
 
         // Sauvegarder la review
         DriverReview savedReview = driverReviewRepository.save(review);
@@ -75,7 +75,7 @@ public class ReviewService {
         avgRating.setDriverId(driverId);
         avgRating.setAverageRating(averageRating);
         avgRating.setTotalReviews(totalReviews);
-        avgRating.setUpdatedAt(LocalDateTime.now());
+        avgRating.setUpdatedAt(LocalDateTime.now().toString());
 
         averageRatingRepository.save(avgRating);
     }
@@ -104,7 +104,7 @@ public class ReviewService {
         // Mise à jour des champs modifiables
         existingReview.setComment(updatedReview.getComment());
         existingReview.setNote(updatedReview.getNote());
-        existingReview.setUpdatedAt(LocalDateTime.now());
+        existingReview.setUpdatedAt(LocalDateTime.now().toString());
         existingReview.setIcon(updatedReview.getIcon());
 
         DriverReview savedReview = driverReviewRepository.save(existingReview);
