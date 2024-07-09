@@ -1,56 +1,88 @@
 package com.service.microservice.controller;
 
-import com.datastax.oss.driver.shaded.guava.common.base.Optional;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.service.microservice.model.Emoji;
-import com.service.microservice.service.ReviewService;
-
+import com.service.microservice.service.EmojiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.pulsar.annotation.PulsarListener;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/reviews")
-public class ReviewController {
-    private final ReviewService reviewService;
+@RequestMapping("/emojis")
+public class EmojiController {
+    @Autowired
+    private EmojiService emojiService;
 
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
+    /* @PostMapping
+    public ResponseEntity<Emoji> updateEmojiByUserIdAndDriverId(@RequestBody Emoji updatedEmoji) {
+        Emoji emoji = emojiService.findByCompleteId(updatedEmoji.getUserId(), updatedEmoji.getDriverId());
+        if (emoji == null) {
+            Emoji savedEmoji = emojiService.saveEmoji(emoji);
+            return new ResponseEntity<>(savedEmoji, HttpStatus.CREATED);
+        } else if (emoji.getEmojiName() == updatedEmoji.getEmojiName()) {
+            emojiService.deleteByUserIdAndDriverId(updatedEmoji.getUserId(), updatedEmoji.getDriverId());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        emoji.setEmojiName(updatedEmoji.getEmojiName());
+        emojiService.saveEmoji(emoji);
+        return new ResponseEntity<>(emoji, HttpStatus.ACCEPTED);
+    } */
+    @PutMapping
+public ResponseEntity<Emoji> updateEmojiByUserIdAndDriverId(@RequestBody Emoji updatedEmoji) {
+    Emoji emoji = emojiService.findByCompleteId(updatedEmoji.getUserId(), updatedEmoji.getDriverId());
+    if (emoji == null) {
+        Emoji savedEmoji = emojiService.saveEmoji(updatedEmoji);
+        return new ResponseEntity<>(savedEmoji, HttpStatus.CREATED);
+    } else if (emoji.getEmojiName().equals(updatedEmoji.getEmojiName())) {
+        emojiService.deleteByUserIdAndDriverId(updatedEmoji.getUserId(), updatedEmoji.getDriverId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    } else {
+        emoji.setEmojiName(updatedEmoji.getEmojiName());
+        emojiService.saveEmoji(emoji);
+        return new ResponseEntity<>(emoji, HttpStatus.OK);
     }
+}
 
-    @PostMapping("/create")
-    public ResponseEntity<Emoji> createReview(@RequestBody Emoji review) {
-        Emoji createdReview = reviewService.createReview(review);
-        return ResponseEntity.ok(createdReview);
-    }
 
-    @GetMapping("/driver/{driverId}")
-    public ResponseEntity<List<Emoji>> getReviewsByDriver(@PathVariable UUID driverId) {
-        List<Emoji> reviews = reviewService.getReviewsByDriver(driverId);
-        return ResponseEntity.ok(reviews);
-    }
-
-    @GetMapping("/reservation/{reservationId}")
-    public ResponseEntity<Emoji> getReviewByReservation(@PathVariable UUID reservationId) {
-        Emoji review = reviewService.getReviewByReservation(reservationId);
-        return review != null ? ResponseEntity.ok(review) : ResponseEntity.notFound().build();
-    }
-
-    @PutMapping("/update/{reviewId}")
-    public ResponseEntity<Emoji> updateReview(@PathVariable UUID reviewId, @RequestHeader("User-Id") UUID userId,
-            @RequestBody Emoji review) {
-        Emoji updatedReview = reviewService.updateReview(reviewId, userId, review);
-        return ResponseEntity.ok(updatedReview);
-    }
-
-    @DeleteMapping("/delete/{reviewId}")
-    public ResponseEntity<Void> deleteReview(@PathVariable UUID reviewId, @RequestHeader("User-Id") UUID userId) {
-        reviewService.deleteReview(reviewId, userId);
-        return ResponseEntity.noContent().build();
-    }
+    /*
+     * @GetMapping("/user/{userId}")
+     * public ResponseEntity<List<Emoji>> getEmojisByUserId(@PathVariable UUID
+     * userId) {
+     * List<Emoji> emojis = emojiService.findByUserId(userId);
+     * return new ResponseEntity<>(emojis, HttpStatus.OK);
+     * }
+     * 
+     * @GetMapping("/driver/{driverId}")
+     * public ResponseEntity<List<Emoji>> getEmojisByDriverId(@PathVariable UUID
+     * driverId) {
+     * List<Emoji> emojis = emojiService.findByDriverId(driverId);
+     * return new ResponseEntity<>(emojis, HttpStatus.OK);
+     * }
+     * 
+     * @GetMapping("/driver/{userId}/{driverId}")
+     * public ResponseEntity<Emoji> getEmojiByUserIdAndDriverId(@PathVariable UUID
+     * userId,
+     * 
+     * @PathVariable UUID driverId) {
+     * Emoji emoji = emojiService.findByCompleteId(userId, driverId);
+     * return new ResponseEntity<>(emoji, HttpStatus.OK);
+     * }
+     * 
+     * @GetMapping("/name/{emojiName}")
+     * public ResponseEntity<List<Emoji>> getEmojisByEmojiName(@PathVariable String
+     * emojiName) {
+     * List<Emoji> emojis = emojiService.findByEmojiName(emojiName);
+     * return new ResponseEntity<>(emojis, HttpStatus.OK);
+     * }
+     * 
+     * @DeleteMapping("/{userId}/{driverId}")
+     * public ResponseEntity<Void> deleteEmoji(@PathVariable UUID
+     * userId, @PathVariable UUID driverId) {
+     * emojiService.deleteByUserIdAndDriverId(userId, driverId);
+     * return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+     * }
+     */
 }

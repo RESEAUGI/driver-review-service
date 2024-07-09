@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Table("emoji_nums")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class EmojiNums {
     @PrimaryKey
     private UUID driverId;
@@ -23,8 +22,6 @@ public class EmojiNums {
     private BigDecimal handDown;
     private BigDecimal heart;
     private BigDecimal angry;
-    private BigDecimal heartEyes;
-    private BigDecimal disappointment;
     private int totalReviews;
     private String updatedAt;
     
