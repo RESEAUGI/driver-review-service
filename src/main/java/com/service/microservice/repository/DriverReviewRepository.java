@@ -11,6 +11,6 @@ public interface DriverReviewRepository extends CassandraRepository<DriverReview
     @AllowFiltering
     List<DriverReview> findByDriverId(UUID driverId);
     @AllowFiltering
-    DriverReview findByReservationId(UUID reservationId);
+    DriverReview findBy(UUID reservationId);
 
 }

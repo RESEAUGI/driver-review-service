@@ -1,9 +1,8 @@
 package com.service.microservice.controller;
 
+import com.datastax.oss.driver.shaded.guava.common.base.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.service.microservice.consumer.ReviewConsumer;
 import com.service.microservice.model.DriverReview;
-import com.service.microservice.producer.ReviewPublisher;
 import com.service.microservice.service.ReviewService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +18,15 @@ import java.util.UUID;
 @RequestMapping("/api/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
-    private ReviewPublisher reviewPublisher;
 
-    public ReviewController(ReviewService reviewService, ReviewPublisher reviewPublisher) {
+    public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
-        this.reviewPublisher = reviewPublisher;
     }
 
     @PostMapping("/create")
-    public void createReview(@RequestBody DriverReview review) throws JsonProcessingException {
-        UUID requestId = UUID.randomUUID();
-        review.setReviewId(requestId);
-        reviewPublisher.publishRawMessage(review);
+    public ResponseEntity<DriverReview> createReview(@RequestBody DriverReview review) {
+        DriverReview createdReview = reviewService.createReview(review);
+        return ResponseEntity.ok(createdReview);
     }
 
     @GetMapping("/driver/{driverId}")

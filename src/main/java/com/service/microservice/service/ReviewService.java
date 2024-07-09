@@ -54,8 +54,8 @@ public class ReviewService {
         }*/
 
         // Générer un ID unique pour la review
-        //UUID reviewId = cassandraIdGenerator.getNextId();
-        //review.setReviewId(reviewId);
+        UUID reviewId = cassandraIdGenerator.getNextId();
+        review.setReviewId(reviewId);
 
         // Sauvegarder la review
         DriverReview savedReview = driverReviewRepository.save(review);
