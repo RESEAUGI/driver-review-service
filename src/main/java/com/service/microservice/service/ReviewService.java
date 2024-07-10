@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -90,6 +91,10 @@ public class ReviewService {
         }
         System.out.println(val/(float)i);
         return val/(float)i;
+    }
+
+    public Optional<AverageRating> getAverageRating(UUID driverId){
+        return averageRatingRepository.findById(driverId);
     }
 
     public List<DriverReview> getReviewsByDriver(UUID driverId) {

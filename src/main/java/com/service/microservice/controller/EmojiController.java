@@ -58,20 +58,20 @@ public class EmojiController {
         if (emoji == null) {
             Emoji savedEmoji = emojiService.saveEmoji(updatedEmoji);
             allDriverEmojis = emojiService.findByDriverId(updatedEmoji.getDriverId());
-            EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis);
+            EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis,updatedEmoji.getDriverId());
             emojiNumsByDriverService.save(emojiNumsByDriver);
             return new ResponseEntity<>(savedEmoji, HttpStatus.CREATED);
         } else if (emoji.getEmojiName().equals(updatedEmoji.getEmojiName())) {
             emojiService.deleteByUserIdAndDriverId(updatedEmoji.getUserId(), updatedEmoji.getDriverId());
             allDriverEmojis = emojiService.findByDriverId(updatedEmoji.getDriverId());
-            EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis);
+            EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis,updatedEmoji.getDriverId());
             emojiNumsByDriverService.save(emojiNumsByDriver);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             emoji.setEmojiName(updatedEmoji.getEmojiName());
             emojiService.saveEmoji(emoji);
             allDriverEmojis = emojiService.findByDriverId(updatedEmoji.getDriverId());
-            EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis);
+            EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis,updatedEmoji.getDriverId());
             emojiNumsByDriverService.update(emojiNumsByDriver.getDriverId(), emojiNumsByDriver.getHandUp(),
                     emojiNumsByDriver.getHandDown(), emojiNumsByDriver.getHeart(), emojiNumsByDriver.getAngry(),
                     emojiNumsByDriver.getTotalReviews());

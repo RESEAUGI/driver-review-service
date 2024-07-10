@@ -48,8 +48,8 @@ public class EmojiNumsByDriverService {
         }
     }
 
-    public EmojiNumsByDriver calculateDriverEmojiNums(List<Emoji> emojis) {
-        EmojiNumsByDriver emojiNumsByDriver = new EmojiNumsByDriver(emojis.get(0).getDriverId(), BigInteger.valueOf(0),
+    public EmojiNumsByDriver calculateDriverEmojiNums(List<Emoji> emojis,UUID driverId) {
+        EmojiNumsByDriver emojiNumsByDriver = new EmojiNumsByDriver(driverId, BigInteger.valueOf(0),
                 BigInteger.valueOf(0), BigInteger.valueOf(0), BigInteger.valueOf(0), 0);
 
         for (Emoji emoji : emojis) {

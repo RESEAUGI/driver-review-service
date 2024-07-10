@@ -2,6 +2,7 @@ package com.service.microservice.controller;
 
 import com.datastax.oss.driver.shaded.guava.common.base.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.service.microservice.model.AverageRating;
 import com.service.microservice.model.DriverReview;
 import com.service.microservice.service.ReviewService;
 
@@ -35,6 +36,12 @@ public class ReviewController {
     public ResponseEntity<List<DriverReview>> getReviewsByDriver(@PathVariable UUID driverId) {
         List<DriverReview> reviews = reviewService.getReviewsByDriver(driverId);
         return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("/driver/rating/{driverId}")
+    public ResponseEntity<java.util.Optional<AverageRating>> getDriverAverageRating(@PathVariable UUID driverId) {
+        java.util.Optional<AverageRating> averageRating = reviewService.getAverageRating(driverId);
+        return ResponseEntity.ok(averageRating);
     }
 
     @GetMapping("/reservation/{reservationId}")
