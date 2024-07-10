@@ -2,6 +2,7 @@ package com.service.microservice.repository;
 
 import com.service.microservice.model.Emoji;
 
+import org.springframework.data.cassandra.core.mapping.Embedded.Nullable;
 import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;
@@ -23,5 +24,6 @@ public interface EmojiRepository extends CassandraRepository<Emoji, UUID> {
     void deleteByUserIdAndDriverId(UUID user_id,UUID driver_id);
     @AllowFiltering
     @Query("SELECT * FROM emoji WHERE user_id = ?0 AND driver_id = ?1;")
+    @Nullable
     Emoji findByCompleteId(UUID user_id,UUID driver_id);
 }

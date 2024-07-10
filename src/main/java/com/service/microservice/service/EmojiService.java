@@ -36,4 +36,5 @@ public class EmojiService {
     public void deleteByUserIdAndDriverId(UUID userId, UUID driverId) {
         emojiRepository.deleteByUserIdAndDriverId(userId,driverId);
     }
+
 }

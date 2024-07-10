@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -68,7 +67,7 @@ public class ReviewService {
 
     private void updateAverageRating(UUID driverId) {
         List<DriverReview> reviews = driverReviewRepository.findByDriverId(driverId);
-        BigDecimal averageRating = calculateAverageRating(reviews);
+        long averageRating = calculateAverageRating(reviews);
         int totalReviews = reviews.size();
 
         AverageRating avgRating = new AverageRating();
@@ -80,9 +79,15 @@ public class ReviewService {
         averageRatingRepository.save(avgRating);
     }
 
-    private BigDecimal calculateAverageRating(List<DriverReview> reviews) {
+    private long calculateAverageRating(List<DriverReview> reviews) {
         // Implémenter la logique de calcul du score moyen
-        return BigDecimal.valueOf(0);
+        int i=0;
+        long val=0;
+        for(DriverReview review: reviews){
+            val+=review.getNote();
+            i++;
+        }
+        return val/i;
     }
 
     public List<DriverReview> getReviewsByDriver(UUID driverId) {

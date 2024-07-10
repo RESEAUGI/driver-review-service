@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,6 +26,6 @@ public class DriverReview {
     private String updatedAt;
     private int likes;
     private int dislikes;
-    private BigDecimal note;
+    private long note;
     private String icon;
 }

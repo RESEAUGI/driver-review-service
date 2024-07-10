@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -18,7 +17,7 @@ import java.util.UUID;
 public class AverageRating {
     @PrimaryKey
     private UUID driverId;
-    private BigDecimal averageRating;
+    private long averageRating;
     private int totalReviews;
     private String updatedAt;
 }
