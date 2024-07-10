@@ -17,7 +17,7 @@ import java.util.UUID;
 public class AverageRating {
     @PrimaryKey
     private UUID driverId;
-    private long averageRating;
+    private float averageRating;
     private int totalReviews;
     private String updatedAt;
 }

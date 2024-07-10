@@ -54,18 +54,45 @@ public class EmojiNumsByDriverService {
 
         for (Emoji emoji : emojis) {
             emojiNumsByDriver.setTotalReviews(emojiNumsByDriver.getTotalReviews() + 1);
-            if (emoji.getEmojiName() == "hand-up") {
-                emojiNumsByDriver.setHandUp(emojiNumsByDriver.getHandUp().add(BigInteger.valueOf(1)));
-            } else if (emoji.getEmojiName() == "hand-down") {
-                emojiNumsByDriver.setHandDown(emojiNumsByDriver.getHandDown().add(BigInteger.valueOf(1)));
-
-            } else if (emoji.getEmojiName() == "heart") {
-                emojiNumsByDriver.setHeart(emojiNumsByDriver.getHeart().add(BigInteger.valueOf(1)));
-
-            } else {
-                emojiNumsByDriver.setAngry(emojiNumsByDriver.getAngry().add(BigInteger.valueOf(1)));
-
+            System.out.println("ici..." + emoji.getEmojiName());
+            /*
+             * if (emoji.getEmojiName() == "hand-up") {
+             * emojiNumsByDriver.setHandUp(emojiNumsByDriver.getHandUp().add(BigInteger.
+             * valueOf(1)));
+             * } else if (emoji.getEmojiName() == "hand-down") {
+             * emojiNumsByDriver.setHandDown(emojiNumsByDriver.getHandDown().add(BigInteger.
+             * valueOf(1)));
+             * 
+             * } else if (emoji.getEmojiName() == "heart") {
+             * System.out.println("Ici");
+             * emojiNumsByDriver.setHeart(emojiNumsByDriver.getHeart().add(BigInteger.
+             * valueOf(1)));
+             * 
+             * } else {
+             * emojiNumsByDriver.setAngry(emojiNumsByDriver.getAngry().add(BigInteger.
+             * valueOf(1)));
+             * 
+             * }
+             */
+            switch (emoji.getEmojiName()) {
+                case "hand-up":
+                    emojiNumsByDriver.setHandUp(emojiNumsByDriver.getHandUp().add(BigInteger.valueOf(1)));
+                    break;
+                case "hand-down":
+                    emojiNumsByDriver.setHandDown(emojiNumsByDriver.getHandDown().add(BigInteger.valueOf(1)));
+                    break;
+                case "heart":
+                    System.out.println("Ici");
+                    emojiNumsByDriver.setHeart(emojiNumsByDriver.getHeart().add(BigInteger.valueOf(1)));
+                    break;
+                case "angry":
+                    emojiNumsByDriver.setAngry(emojiNumsByDriver.getAngry().add(BigInteger.valueOf(1)));
+                    break;
+                default:
+                    System.out.println("C'est pas bon du tout");
+                    break;
             }
+            System.out.println("Enum drivers. " + emojiNumsByDriver);
         }
         return emojiNumsByDriver;
     }

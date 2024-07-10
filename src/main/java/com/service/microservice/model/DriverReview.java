@@ -21,11 +21,12 @@ public class DriverReview {
     private UUID userId;
     private UUID driverId;
     private UUID reservationId;
+    private String userName;
     private String comment;
     private String createdAt;
     private String updatedAt;
     private int likes;
     private int dislikes;
-    private long note;
+    private int note;
     private String icon;
 }

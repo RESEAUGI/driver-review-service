@@ -21,5 +21,4 @@ public class EmojiNumsByDriver {
     private BigInteger heart;
     private BigInteger angry;
     private int totalReviews;
-
 }

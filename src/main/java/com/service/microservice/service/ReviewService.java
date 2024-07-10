@@ -67,7 +67,7 @@ public class ReviewService {
 
     private void updateAverageRating(UUID driverId) {
         List<DriverReview> reviews = driverReviewRepository.findByDriverId(driverId);
-        long averageRating = calculateAverageRating(reviews);
+        float averageRating = calculateAverageRating(reviews);
         int totalReviews = reviews.size();
 
         AverageRating avgRating = new AverageRating();
@@ -79,15 +79,17 @@ public class ReviewService {
         averageRatingRepository.save(avgRating);
     }
 
-    private long calculateAverageRating(List<DriverReview> reviews) {
+    private float calculateAverageRating(List<DriverReview> reviews) {
         // Implémenter la logique de calcul du score moyen
         int i=0;
-        long val=0;
+        float val=0;
         for(DriverReview review: reviews){
             val+=review.getNote();
+            System.out.println(val);
             i++;
         }
-        return val/i;
+        System.out.println(val/(float)i);
+        return val/(float)i;
     }
 
     public List<DriverReview> getReviewsByDriver(UUID driverId) {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE,
@@ -51,20 +52,25 @@ public class EmojiController {
          * BigInteger.valueOf(0), BigInteger.valueOf(0), BigInteger.valueOf(0), 0);
          */
         Emoji emoji = emojiService.findByCompleteId(updatedEmoji.getUserId(), updatedEmoji.getDriverId());
+        System.out.println("id du driver: "+updatedEmoji.getDriverId());
+        System.out.println("id de l'user: "+updatedEmoji.getUserId());
         List<Emoji> allDriverEmojis = emojiService.findByDriverId(updatedEmoji.getDriverId());
         if (emoji == null) {
             Emoji savedEmoji = emojiService.saveEmoji(updatedEmoji);
+            allDriverEmojis = emojiService.findByDriverId(updatedEmoji.getDriverId());
             EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis);
             emojiNumsByDriverService.save(emojiNumsByDriver);
             return new ResponseEntity<>(savedEmoji, HttpStatus.CREATED);
         } else if (emoji.getEmojiName().equals(updatedEmoji.getEmojiName())) {
             emojiService.deleteByUserIdAndDriverId(updatedEmoji.getUserId(), updatedEmoji.getDriverId());
+            allDriverEmojis = emojiService.findByDriverId(updatedEmoji.getDriverId());
             EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis);
             emojiNumsByDriverService.save(emojiNumsByDriver);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             emoji.setEmojiName(updatedEmoji.getEmojiName());
             emojiService.saveEmoji(emoji);
+            allDriverEmojis = emojiService.findByDriverId(updatedEmoji.getDriverId());
             EmojiNumsByDriver emojiNumsByDriver = emojiNumsByDriverService.calculateDriverEmojiNums(allDriverEmojis);
             emojiNumsByDriverService.update(emojiNumsByDriver.getDriverId(), emojiNumsByDriver.getHandUp(),
                     emojiNumsByDriver.getHandDown(), emojiNumsByDriver.getHeart(), emojiNumsByDriver.getAngry(),
@@ -73,10 +79,25 @@ public class EmojiController {
         }
     }
 
-    @GetMapping("/driver/{userId}/{driverId}")
-    public ResponseEntity<Emoji> getEmojiByUserIdAndDriverId(@PathVariable UUID userId, @PathVariable UUID driverId) {
-        Emoji emoji = emojiService.findByCompleteId(userId, driverId);
-        return new ResponseEntity<>(emoji, HttpStatus.OK);
+    /*
+     * @GetMapping("/driver/{userId}/{driverId}")
+     * public ResponseEntity<Emoji> getEmojiByUserIdAndDriverId(@PathVariable UUID
+     * userId, @PathVariable UUID driverId) {
+     * Emoji emoji = emojiService.findByCompleteId(userId, driverId);
+     * return new ResponseEntity<>(emoji, HttpStatus.OK);
+     * }
+     * 
+     * @GetMapping("/driver/{driverId}")
+     * public ResponseEntity<List<Emoji>> getEmojisByDriverId(@PathVariable UUID
+     * driverId) {
+     * List<Emoji> emojis = emojiService.findByDriverId(driverId);
+     * return new ResponseEntity<>(emojis, HttpStatus.OK);
+     * }
+     */
+    @GetMapping("{driverId}")
+    public ResponseEntity<Optional<EmojiNumsByDriver>> getEmojisByDriverId(@PathVariable UUID driverId) {
+        Optional<EmojiNumsByDriver> emojis = emojiNumsByDriverService.findById(driverId);
+        return new ResponseEntity<>(emojis, HttpStatus.OK);
     }
     /*
      * @GetMapping("/user/{userId}")
@@ -86,12 +107,6 @@ public class EmojiController {
      * return new ResponseEntity<>(emojis, HttpStatus.OK);
      * }
      * 
-     * @GetMapping("/driver/{driverId}")
-     * public ResponseEntity<List<Emoji>> getEmojisByDriverId(@PathVariable UUID
-     * driverId) {
-     * List<Emoji> emojis = emojiService.findByDriverId(driverId);
-     * return new ResponseEntity<>(emojis, HttpStatus.OK);
-     * }
      * 
      * 
      * @GetMapping("/name/{emojiName}")
