@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -14,13 +16,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table("driver_reviews")
+@Table("${review_table.name}")
 public class DriverReview {
     @PrimaryKey
     private UUID reviewId;
+    @Column("${column.reviewer.id}")
     private UUID userId;
+    @Column("${column.service_provider.id}")
     private UUID driverId;
     private UUID reservationId;
+    @Column("${column.reviewer.name}")
     private String userName;
     private String comment;
     private String createdAt;
